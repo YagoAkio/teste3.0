@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function TelaCadastroCliente(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaClientes, setListaClientes] = useState([]);
+    //const [listaClientes, setListaClientes] = useState([]);
     const [clienteParaEdicao, setClienteParaEdicao] = useState({
         cpf:'',
         nome:'',
