@@ -16,12 +16,12 @@ const clienteSlice = createSlice({
             state.listaClientes.push(action.payload);
         },
         remover:(state,action)=>{
-            state.listaClientes = state.listaClientes.filter(cliente => cliente.cpf !== action.payload.cliente.cpf);
+            state.listaClientes = state.listaClientes.filter(cliente => cliente.cpf !== action.payload.cpf);
         },
         atualizar:(state,action)=>{
             //Atualizar implicará em excluir o cliente da lista e adicioná-lo novamente com seus dados alterados
             //remover -> adicionar novamente com dados atualizados
-            const listaTemporariaClientes = state.listaClientes.filter(cliente => cliente.cpf !== action.payload.cliente.cpf);
+            const listaTemporariaClientes = state.listaClientes.filter(cliente => cliente.cpf !== action.payload.cpf);
             state.listaClientes = [...listaTemporariaClientes, action.payload.cliente];
         }
 

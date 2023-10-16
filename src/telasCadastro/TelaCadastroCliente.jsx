@@ -26,8 +26,6 @@ export default function TelaCadastroCliente(props) {
                     //dinâmica em que o usuário irá alternar entre o formulário de cadastro
                     //e a visualização do registros já cadastrados.
                     exibirFormulario ? <FormCadCliente exibirFormulario={setExibirFormulario} 
-                                                       listaClientes={listaClientes}
-                                                       setListaClientes={setListaClientes}
                                                        clienteParaEdicao={clienteParaEdicao}
                                                        setClienteParaEdicao={setClienteParaEdicao}
                                                        modoEdicao={modoEdicao}
@@ -35,8 +33,6 @@ export default function TelaCadastroCliente(props) {
                                                        /> 
                                      : 
                                       <TabelaClientes exibirFormulario={setExibirFormulario}
-                                                      listaClientes={listaClientes}
-                                                      setListaClientes={setListaClientes}
                                                       clienteParaEdicao={clienteParaEdicao}
                                                       setClienteParaEdicao={setClienteParaEdicao}
                                                       modoEdicao={modoEdicao}

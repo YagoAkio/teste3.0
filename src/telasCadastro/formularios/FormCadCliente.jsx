@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
+import { useSelector, useDispatch} from 'react-redux';
+import { adicionar, atualizar} from '../../redux/clienteReducer';
+
 export default function FormCadCliente(props) {
     //os atributos deste objeto devem estar associados aos inputs do formulários
     const clienteVazio = {
@@ -15,6 +18,9 @@ export default function FormCadCliente(props) {
     const estadoInicialCliente = props.clienteParaEdicao;
     const [cliente, setCliente] = useState(estadoInicialCliente);
     const [formValidado, setFormValidado] = useState(false);
+    const {status,mensagem,listaClientes} = useSelector((state)=>state.cliente);
+    const dispatch = useDispatch();
+
 
     function manipularMudancas(e){
         const componente = e.currentTarget;
@@ -28,12 +34,16 @@ export default function FormCadCliente(props) {
             //todos os campos preenchidos
             //mandar os dados para o backend
             if(!props.modoEdicao){
-                props.setListaClientes([...props.listaClientes,cliente]);
+                //substituído pelo padrão redux
+                //props.setListaClientes([...props.listaClientes,cliente]);
+                dispatch(adicionar(cliente));
             }
             else{
                 //alterar os dados do cliente (filtra e adiciona)
 
-                props.setListaClientes([...props.listaClientes.filter((itemCliente)=>itemCliente.cpf !== cliente.cpf),cliente]);
+                //substituído pelo padrão redux
+                //props.setListaClientes([...props.listaClientes.filter((itemCliente)=>itemCliente.cpf !== cliente.cpf),cliente]);
+                dispatch(atualizar(cliente));
                 props.setModoEdicao(false);
                 props.setClienteParaEdicao(clienteVazio);                
             }
