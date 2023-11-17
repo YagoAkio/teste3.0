@@ -5,6 +5,9 @@ import TelaMenu from "./telasCadastro/TelaMenu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import store from "./redux/store";
 import { Provider } from "react-redux";//componente
+import { ToastContainer, toast } from "react-toastify";
+import TelaCadastroCategoria from "./telasCadastro/TelaCadastroCategoria";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -17,6 +20,7 @@ function App() {
             }
             <Route path="/clientes" element={<TelaCadastroCliente />} />
             <Route path="/produtos" element={<TelaCadastroProduto />} />
+            <Route path="/categorias" element={<TelaCadastroCategoria />} />
             <Route path="/" element={<TelaMenu />} />
             {
               //... demais telas de cadastro
@@ -25,6 +29,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Provider>
+      <ToastContainer/>
     </div>
   );
 }
