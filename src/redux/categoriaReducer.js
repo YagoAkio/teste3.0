@@ -3,7 +3,7 @@ import ESTADO from '../recursos/estado';
 const urlBase = 'http://localhost:4000/categoria';
 //Thunks
 export const buscarCategorias = createAsyncThunk('categoria/buscarCategorias', async () => {
-    try {
+    try { 
         const resposta = await fetch(urlBase, { method: 'GET' });
         const dados = await resposta.json();
         if (dados.status) {
