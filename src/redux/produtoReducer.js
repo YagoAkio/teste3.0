@@ -10,7 +10,7 @@ export const buscarProdutos = createAsyncThunk('buscarProdutos', async () => {
             return {
                 status: dados.status,
                 mensagem: "",
-                listaProdutos
+                listaProdutos: dados.listaProdutos
             }
         }
         else {
@@ -145,13 +145,13 @@ const produtoSlice = createSlice({
             .addCase(buscarProdutos.fulfilled, (state, action) => {
                 if (action.payload.status) {
                     state.estado = ESTADO.OCIOSO;
-                    state.mensagem = "Produtos recuperados do backend!",
-                        state.produtos = action.payload.listaProdutos;
+                    state.mensagem = "Produtos recuperados do backend!";
+                    state.produtos = action.payload.listaProdutos;
                 }
                 else {
                     state.estado = ESTADO.ERRO;
-                    state.mensagem = action.payload.mensagem,
-                        state.produtos = [];
+                    state.mensagem = action.payload.mensagem;
+                    state.produtos = [];
                 }
             })
             .addCase(buscarProdutos.rejected, (state, action) => {
@@ -188,7 +188,7 @@ const produtoSlice = createSlice({
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
                     //É preciso também atualizar o estado da aplicação e não somente o backend
-                    const indice = state.produtos.findIndex((produto) => {produto.codigo === action.payload.produto.codigo});
+                    const indice = state.produtos.findIndex((produto) => produto.codigo === action.payload.produto.codigo);
                     state.produtos[indice]=action.payload.produto;
                 }
                 else{
@@ -209,7 +209,7 @@ const produtoSlice = createSlice({
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
                     //É preciso também atualizar o estado da aplicação e não somente o backend
-                    state.produtos = state.produtos.filter((produto) => {produto.codigo !== action.payload.produto.codigo});
+                    state.produtos = state.produtos.filter((produto) => produto.codigo !== action.payload.produto.codigo);
                 }
                 else{
                     state.estado = ESTADO.ERRO;
