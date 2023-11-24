@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
 import { incluirProduto, atualizarProduto } from '../../redux/produtoReducer';
 
-
 export default function FormCadProduto(props) {
     //recuperar as categorias
     //os atributos deste objeto devem estar associados aos inputs do formulários
@@ -37,14 +36,14 @@ export default function FormCadProduto(props) {
             if (!props.modoEdicao) {
                 //substituído pelo padrão redux
                 //props.setListaProdutos([...props.listaProdutos,produto]);
-                dispatch(incluirProduto(produto));
+               
             }
             else {
                 //alterar os dados do produto (filtra e adiciona)
 
                 //substituído pelo padrão redux
                 //props.setListaProdutos([...props.listaProdutos.filter((itemProduto)=>itemProduto.cpf !== produto.cpf),produto]);
-                dispatch(atualizarProduto(produto));
+               
                 props.setModoEdicao(false);
                 props.setProdutoParaEdicao(produtoVazio);
             }
