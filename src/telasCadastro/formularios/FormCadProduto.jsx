@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
-import { useSelector, useDispatch } from 'react-redux';
 import { incluirProduto, atualizarProduto } from '../../redux/produtoReducer';
 
+
 export default function FormCadProduto(props) {
+    //recuperar as categorias
     //os atributos deste objeto devem estar associados aos inputs do formulários
     const produtoVazio = {
         codigo: '0',
@@ -20,9 +21,7 @@ export default function FormCadProduto(props) {
     const estadoInicialProduto = props.produtoParaEdicao;
     const [produto, setProduto] = useState(estadoInicialProduto);
     const [formValidado, setFormValidado] = useState(false);
-    const { status, mensagem, listaProdutos } = useSelector((state) => state.produto);
-    const dispatch = useDispatch();
-
+    
 
     function manipularMudancas(e) {
         const componente = e.currentTarget;
