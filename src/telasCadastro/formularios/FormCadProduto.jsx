@@ -1,6 +1,10 @@
-import { useState } from "react";
-import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Container, Form, Row, Col, FloatingLabel, Spinner } from "react-bootstrap";
 import { incluirProduto, atualizarProduto } from '../../redux/produtoReducer';
+import { useSelector, useDispatch } from "react-redux";
+import { buscarCategorias } from "../../redux/categoriaReducer";
+import ESTADO from "../../recursos/estado";
+import { toast } from "react-toastify";
 
 export default function FormCadProduto(props) {
     //recuperar as categorias
@@ -13,19 +17,39 @@ export default function FormCadProduto(props) {
         dataValidade: '',
         qtdEstoque: '',
         categoria: {
-            codigo:0,
-            descricao:''
+            codigo: 0,
+            descricao: ''
         }
     }
     const estadoInicialProduto = props.produtoParaEdicao;
     const [produto, setProduto] = useState(estadoInicialProduto);
     const [formValidado, setFormValidado] = useState(false);
-    
+
+    const { estado: estadoCat,
+        mensagem: mensagemCat,
+        categorias } = useSelector((state) => state.categoria);
+
+    const { estado, mensagem, produtos } = useSelector((state) => state.produto);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(buscarCategorias());
+    }, [dispatch]); //observar o despachante para buscar categorias e manter a interface atualizada com as categorias
 
     function manipularMudancas(e) {
         const componente = e.currentTarget;
-        console.log(componente.value)
         setProduto({ ...produto, [componente.name]: componente.value });
+    }
+
+    function selecionaCategoria(e) {
+        const componente = e.currentTarget;
+        setProduto({
+            ...produto, categoria: {
+                "codigo": componente.value,
+                "descricao": componente.options[componente.selectedIndex].text
+            }
+        });
     }
 
     function manipularSubmissao(e) {
@@ -36,14 +60,14 @@ export default function FormCadProduto(props) {
             if (!props.modoEdicao) {
                 //substituído pelo padrão redux
                 //props.setListaProdutos([...props.listaProdutos,produto]);
-               
+                dispatch(incluirProduto(produto));
             }
             else {
                 //alterar os dados do produto (filtra e adiciona)
 
                 //substituído pelo padrão redux
                 //props.setListaProdutos([...props.listaProdutos.filter((itemProduto)=>itemProduto.cpf !== produto.cpf),produto]);
-               
+
                 props.setModoEdicao(false);
                 props.setProdutoParaEdicao(produtoVazio);
             }
@@ -60,6 +84,37 @@ export default function FormCadProduto(props) {
 
     return (
         <Container>
+            {estado === ESTADO.ERRO ?
+                toast.error(({ closeToast }) =>
+                    <div>
+                        <p>{mensagem}</p>
+
+                    </div>
+                    , { toastId: estado })
+                :
+                null
+            }
+            {
+                estado === ESTADO.PENDENTE ?
+                    toast(({ closeToast }) =>
+                        <div>
+                            <Spinner animation="border" role="status"></Spinner>
+                            <p>Processando a requisição...</p>
+                        </div>
+                        , { toastId: estado }) 
+                : 
+                null
+            }
+            
+            {
+                //apagar as mensagens que ainda estão sendo exibidas
+                estado === ESTADO.OCIOSO ?
+                setTimeout(()=>{
+                    toast.dismiss();
+                },2000)
+                :
+                null
+            }
             <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
                 <Row>
                     <Col>
@@ -187,12 +242,31 @@ export default function FormCadProduto(props) {
                                 aria-label="Categoria dos produtos"
                                 id='categoria'
                                 name='categoria'
-                                onChange={manipularMudancas}
+                                onChange={selecionaCategoria}
                                 value={produto.categoria.codigo}
                                 requerid>
-                                <option value="SP" selected>São Paulo</option>
-
+                                <option value="0" selected>Selecione uma categoria</option>
+                                {
+                                    categorias?.map((categoria) =>
+                                        <option key={categoria.codigo} value={categoria.codigo}>
+                                            {categoria.descricao}
+                                        </option>
+                                    )
+                                }
                             </Form.Select>
+                            {estadoCat === ESTADO.PENDENTE ?
+                                <Spinner animation="border" role="status">
+                                    <span className="visually-hidden">Carregando categorias...</span>
+                                </Spinner>
+                                :
+                                null
+                            }
+                            {
+                                estadoCat === ESTADO.ERRO ?
+                                    <p>Erro ao carregar as categorias: {mensagemCat}</p>
+                                    :
+                                    null
+                            }
                         </FloatingLabel>
                     </Col>
                 </Row>

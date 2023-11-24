@@ -36,7 +36,7 @@ export const incluirProduto = createAsyncThunk('incluirProduto', async (produto)
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: produto
+            body: JSON.stringify(produto)
         });
         const dados = await resposta.json();
         if (dados.status){
@@ -69,7 +69,7 @@ export const atualizarProduto = createAsyncThunk('atualizarProduto', async (prod
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: produto
+            body: JSON.stringify(produto)
         });
         const dados = await resposta.json();
         if (dados.status){
