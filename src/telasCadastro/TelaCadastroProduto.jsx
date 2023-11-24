@@ -6,13 +6,39 @@ import { useState } from "react";
 
 export default function TelaCadastroProduto(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
+    const [modoEdicao, setModoEdicao] = useState(false);
+    const [produtoParaEdicao, setProdutoParaEdicao] = useState({
+        codigo: '0',
+        descricao: '',
+        precoCusto: '',
+        precoVenda: '',
+        dataValidade: '',
+        qtdEstoque: '',
+        categoria: {
+            codigo:0,
+            descricao:''
+        },
+    });
+
     return (
         <Container>
             <Pagina>
                 {
                     //dinâmica em que o usuário irá alternar entre o formulário de cadastro
                     //e a visualização do registros já cadastrados.
-                    exibirFormulario ? <FormCadProduto /> : <TabelaProdutos />
+                    exibirFormulario ? 
+                    <FormCadProduto exibirFormulario={setExibirFormulario}
+                                    setExibirFormulario={setExibirFormulario}
+                                    modoEdicao={modoEdicao}
+                                    setModoEdicao={setModoEdicao}
+                                    produtoParaEdicao={produtoParaEdicao}
+                                    setProdutoParaEdicao={setProdutoParaEdicao}/> 
+                    : 
+                    <TabelaProdutos exibirFormulario={setExibirFormulario}
+                                    setExibirFormulario={setExibirFormulario}
+                                    modoEdicao={modoEdicao}
+                                    setModoEdicao={setModoEdicao}
+                                    setProdutoParaEdicao={setProdutoParaEdicao}/>
                 }
             </Pagina>
         </Container>
